@@ -87,20 +87,6 @@ namespace DataAccess.Repository.Repository
         /// <summary>
         /// сохранить изменения контекста в БД
         /// </summary>
-        Task SaveChangesAsync();
-
-        /// <summary>
-        /// Ослеживает изменения между сущностями с клиента и теми что есть в базе, не вызывает сохранение контекста
-        /// </summary>
-        /// <typeparam name="TParent">Тип Родителя</typeparam>
-        /// <typeparam name="TChild">Тип ребенка</typeparam>
-        /// <param name="parent">Сущность родителя (с клиента)</param>
-        /// <param name="refFromParrentToChildCollection">Лямба указывающая на коллекцию изменения которой нужно отследить</param>
-        /// <param name="refFromChildToParrentKey">Лямбда указывающая на обратное свойсво с ключем на родителя</param>
-        /// <returns>Возвращает коллекцию новых сущностей привязанных к контексту</returns>
-        Task<List<TChild>> TrackChildChanges<TParent, TChild>(TParent parent,
-            Func<TParent, ICollection<TChild>> refFromParrentToChildCollection,
-            Expression<Func<TChild, int>> refFromChildToParrentKey) where TParent : class, IDbEntity
-            where TChild : class, IDbEntity;
+        Task SaveChangesAsync();        
     }
 }

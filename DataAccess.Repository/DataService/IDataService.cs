@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using DataAccess.Repository.Repository;
 using DataAccess.Repository.Specification;
 using DataAccess.Repository.Specification.Filter;
@@ -34,12 +35,14 @@ namespace DataAccess.Repository.DataService
         /// получить сущность по Id  и сконвертировать ее в TDto
         /// </summary>
         /// <param name="spec">спецификация запроса (Id объекта, джоины)</param>
-        Task<TDto> GetMappedItem<TDto>(GetByIdSpec<TEntity> spec);
+        /// <param name="mapper">Automapper engine</param>
+        Task<TDto> GetMappedItem<TDto>(GetByIdSpec<TEntity> spec, IMapper mapper);
 
         /// <summary>
         /// получить сущность по Id  и сконвертировать ее в TDto
         /// </summary>
-        Task<TDto> GetMappedItem<TDto>(int itemId);
+        /// <param name="mapper">Automapper engine</param>
+        Task<TDto> GetMappedItem<TDto>(int itemId, IMapper mapper);
 
         /// <summary>
         /// получить сущность по Id и кинуть исключение, если не найдена
@@ -56,13 +59,13 @@ namespace DataAccess.Repository.DataService
         /// получить сущность по Id и сконвертировать ее в TDto.
         /// Кинуть исключение, если не найдена
         /// </summary>
-        Task<TDto> GetMappedItemOrThrow<TDto>(int itemId);
+        Task<TDto> GetMappedItemOrThrow<TDto>(int itemId, IMapper mapper);
 
         /// <summary>
         /// получить сущность по Id и сконвертировать ее в TDto.
         /// Кинуть исключение, если не найдена
         /// </summary>
-        Task<TDto> GetMappedItemOrThrow<TDto>(GetByIdSpec<TEntity> spec);
+        Task<TDto> GetMappedItemOrThrow<TDto>(GetByIdSpec<TEntity> spec, IMapper mapper);
 
         #endregion
 
@@ -84,7 +87,8 @@ namespace DataAccess.Repository.DataService
         /// получить список сущностей EF, сконвертированный в TDto.  Маппинг для Automapper должен быть создан заранее
         /// </summary>
         /// <param name="spec">спецификация запроса (фильтрация, пагинация, джоины)</param>
-        Task<List<TDest>> GetItemsMappedList<TDest>(QuerySpec<TEntity> spec);
+        /// <param name="mapper">Automapper engine</param>
+        Task<List<TDest>> GetItemsMappedList<TDest>(QuerySpec<TEntity> spec, IMapper mapper);
 
         /// <summary>
         /// получить список сущностей с кастомной сортировкой
@@ -97,7 +101,8 @@ namespace DataAccess.Repository.DataService
         /// Маппинг для Automapper должен быть создан заранее.
         /// </summary>
         /// <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
-        Task<List<TDest>> GetItemsOrderedMappedList<TSortKey, TDest>(OrderedQuerySpec<TEntity, TSortKey> spec);
+        /// <param name="mapper">Automapper engine</param>
+        Task<List<TDest>> GetItemsOrderedMappedList<TSortKey, TDest>(OrderedQuerySpec<TEntity, TSortKey> spec, IMapper mapper);
 
         /// <summary>
         /// Получить объект запроса (IQueryable) списка сущностей с кастомной сортировкой
@@ -129,7 +134,7 @@ namespace DataAccess.Repository.DataService
         /// <summary>
         /// Смапить объект Dto в объект EF и добавить в контекст.  Изменения в БД не сохраняем
         /// </summary>
-        void AddItem<TDto>(TDto dto);
+        void AddItem<TDto>(TDto dto, IMapper mapper);
 
         /// <summary>
         /// добавить объект EF в контекст и сохранить изменения контекста в БД .
@@ -138,16 +143,11 @@ namespace DataAccess.Repository.DataService
         Task<TEntity> AddAndSave(TEntity item);
 
         /// <summary>
+        /// сконвертироват Dto в доменный объект
         /// добавить объект EF в контекст и сохранить изменения контекста в БД.
-        /// Вернуть сохраненный объект сконвертированный в TDto
+        /// Вернуть сохраненный объект 
         /// </summary>
-        Task<TDto> AddAndSave<TDto>(TEntity item);
-
-        /// <summary>
-        /// сконвертировать Dto->EF, добавить в контекст, сохранить изменения контекста в БД.
-        /// Вернуть сохраненный объект сконвертированный в TDto
-        /// </summary>
-        Task<TDto> AddAndSave<TDto>(TDto dto);
+        Task<TEntity> AddAndSave<TDto>(TDto dto, IMapper mapper);
 
         #endregion
 
@@ -166,7 +166,7 @@ namespace DataAccess.Repository.DataService
         /// <summary>
         /// Смапить объект Dto в объект EF и добавить в контекст. Изменения в БД не сохраняем
         /// </summary>
-        void UpsertItem<TDto>(TDto dto);
+        void UpsertItem<TDto>(TDto dto, IMapper mapper);
 
         /// <summary>
         /// Добавить в контекст объект EF и сохранить в БД
@@ -174,14 +174,10 @@ namespace DataAccess.Repository.DataService
         Task<TEntity> UpsertAndSave(TEntity item);
 
         /// <summary>
-        /// Добавить в контекст объект EF и сохранить в БД. Вернет смапленый в TDto объект
+        /// Сконвертировать Dto в доменный объект
+        /// Добавить в контекст объект EF и сохранить в БД. 
         /// </summary>
-        Task<TDto> UpsertAndSave<TDto>(TEntity item);
-
-        /// <summary>
-        /// Dto => EF, добавить в контекст  и сохранить в БД. Вернет смапленый обратно в TDto объект.
-        /// </summary>
-        Task<TDto> UpsertAndSave<TDto>(TDto dto);
+        Task<TEntity> UpsertAndSave<TDto>(TDto dto, IMapper mapper);
 
         #endregion
 
@@ -190,12 +186,12 @@ namespace DataAccess.Repository.DataService
         /// <summary>
         /// удалить сущность
         /// </summary>
-        Task RemoveItem(TEntity item);
+        void RemoveItem(TEntity item);
 
         /// <summary>
         /// удалить коллекцию сущность
         /// </summary>
-        Task RemoveRange(IEnumerable<TEntity> items);
+        void RemoveRange(IEnumerable<TEntity> items);
 
         /// <summary>
         /// удалить сущность

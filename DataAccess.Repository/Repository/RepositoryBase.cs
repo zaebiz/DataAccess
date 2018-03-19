@@ -5,6 +5,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Threading.Tasks;
+using DataAccess.Repository.Extensions;
 using DataAccess.Repository.Specification;
 using DataAccess.Repository.Specification.Filter;
 
@@ -35,6 +36,7 @@ namespace DataAccess.Repository.Repository
         public IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IDbEntity
             => GetDbSet<TEntity>();
 
+        [Obsolete]
         public IQueryable<TEntity> GetFilteredQueryable<TEntity>(IQueryFilter<TEntity> spec) where TEntity : class, IDbEntity
             => GetQueryable<TEntity>()
                 .ApplyFilter(spec);
@@ -134,75 +136,5 @@ namespace DataAccess.Repository.Repository
             await _db.SaveChangesAsync();
         }
 
-        //todo: mvd написать перегрузку этого метода для сущностей у который указатель на родителя int?
-        public async Task<List<TChild>> TrackChildChanges<TParent, TChild>(
-            TParent parent,
-            Func<TParent, ICollection<TChild>> refFromParrentToChildCollection,
-            Expression<Func<TChild, int>> refFromChildToParrentKey) 
-            where TParent : class, IDbEntity 
-            where TChild : class, IDbEntity
-        {
-            //берем ключ родителя
-            var parentId = parent.Id;
-
-            //достаем функцию из выражения
-            var funcRefFromChildToParrentKey = refFromChildToParrentKey.Compile();
-
-            //делаем копию коллекции, выбирая только те сущности, у которых не проставлен ключ либо проставлен в 0
-            var newItems = refFromParrentToChildCollection(parent).Where(o => funcRefFromChildToParrentKey(o) == default(int) || funcRefFromChildToParrentKey(o) == parentId).ToList();
-
-            //для сущностей у которых не выставлен ключ на родителя, выставляем значения ключа
-            newItems.Where(o => funcRefFromChildToParrentKey(o) == default(int)).ToList().ForEach(newItem =>
-            {
-                ((refFromChildToParrentKey.Body as MemberExpression)?.Member as PropertyInfo)?.SetValue(newItem, parentId, null);
-            });
-
-            //создаем лямбду для EF по поиску старых значений
-            var keyConst = Expression.Constant(parentId, typeof(int));
-            var keyProp = Expression.Convert(refFromChildToParrentKey.Body, typeof(int));
-            var lam = Expression.Lambda<Func<TChild, bool>>(Expression.Equal(keyProp, keyConst), refFromChildToParrentKey.Parameters);
-
-            //доставем из базы старые значения
-            var oldItems = await _db.Set<TChild>().Where(lam).ToListAsync();
-
-            //сравниваем с новыми
-            var itemsForDelete = oldItems.Where(o => newItems.All(n => n.Id != o.Id)).ToList();
-            var itemsForAdd = newItems.Where(o => o.Id == default(int)).ToList();
-            var itemsForUpdate = newItems.Where(o => o.Id != default(int)).ToList();
-
-            //удаляем старые
-            foreach (var entity in itemsForDelete)
-            {
-                _db.Entry(entity).State = EntityState.Deleted;
-            }
-
-            //добавляем новые
-            foreach (var entity in itemsForAdd)
-            {
-                _db.Entry(entity).State = EntityState.Added;
-            }
-
-            foreach (var entity in itemsForUpdate)
-            {
-                //проверяем контекст и базу
-                //(все элементы коллекции для обновления должны быть в контексте, тк мы раньше уже доставали все значение из базы по ключу родителя)
-                //тем не менее в случае рассинхронизации с клиента может прийти элементы которых уже нет в дб, для этого мы проверяем и контекст и базу
-                var exist = await _db.Set<TChild>().FindAsync(entity.Id);
-                if (exist != null)
-                {
-                    //отсоединяем существующую сущность из контекста
-                    _db.Entry(exist).State = EntityState.Detached;
-                    //присоединяем новую
-                    _db.Entry(entity).State = EntityState.Modified;
-                }
-                //если с клиента пришел элемент которого нет в базе, ничего не делаем
-                //else
-                //{
-                //    _db.Set<TChild>().Add(entity);
-                //}
-            }
-
-            return newItems;
-        }
     }
 }

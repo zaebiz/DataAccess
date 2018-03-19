@@ -75,11 +75,11 @@
     <Compile Include="Query\GetOrderedListQuery.cs" />
     <Compile Include="Query\IDbQuery.cs" />
     <Compile Include="Query\INtQuery.cs" />
-    <Compile Include="Repository\DbContextEx.cs" />
+    <Compile Include="Extensions\DbContextEx.cs" />
     <Compile Include="Repository\DbEntityBase.cs" />
     <Compile Include="Repository\IDbEntity.cs" />
     <Compile Include="Repository\IRepository.cs" />
-    <Compile Include="Repository\QueryableEx.cs" />
+    <Compile Include="Extensions\QueryableEx.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
     <Compile Include="Specification\Filter\IQueryFilter.cs" />
     <Compile Include="Specification\Filter\QueryFilterBase.cs" />
@@ -98,6 +98,7 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

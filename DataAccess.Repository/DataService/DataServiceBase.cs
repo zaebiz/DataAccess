@@ -21,15 +21,13 @@ namespace DataAccess.Repository.DataService
     public class DataServiceBase<TEntity> : IDataService<TEntity>
         where TEntity: class, IDbEntity
     {
-        protected readonly IRepository _repository;
-        protected readonly IMapper _mapper;
+        protected readonly IRepository _repository;        
 
         public IRepository Repository => _repository;
 
-        public DataServiceBase(IRepository repository, IMapper mapper)
+        public DataServiceBase(IRepository repository)
         {
-            _repository = repository;
-            _mapper = mapper;
+            _repository = repository;            
         }
 
         #region GetById Methods        
@@ -55,20 +53,16 @@ namespace DataAccess.Repository.DataService
             .ConfigureAwait(false);
         }
         
-        public async Task<TDto> GetMappedItem<TDto>(GetByIdSpec<TEntity> spec)
+        public async Task<TDto> GetMappedItem<TDto>(GetByIdSpec<TEntity> spec, IMapper mapper)
         {
             var item = await GetItem(spec).ConfigureAwait(false);
-
-            return _mapper.Map<TDto>(item);
+            return mapper.Map<TDto>(item);
         }
 
-        public async Task<TDto> GetMappedItem<TDto>(int itemId)
+        public async Task<TDto> GetMappedItem<TDto>(int itemId, IMapper mapper)
         {
-            return await GetMappedItem<TDto>(new GetByIdSpec<TEntity>()
-            {
-                Id = itemId
-            })
-            .ConfigureAwait(false);
+            return await GetMappedItem<TDto>(new GetByIdSpec<TEntity>() { Id = itemId }, mapper)
+                .ConfigureAwait(false);
         }
         
         public virtual async Task<TEntity> GetItemOrThrow(GetByIdSpec<TEntity> spec)
@@ -91,22 +85,20 @@ namespace DataAccess.Repository.DataService
         }
 
         
-        public async Task<TDto> GetMappedItemOrThrow<TDto>(int itemId)
+        public async Task<TDto> GetMappedItemOrThrow<TDto>(int itemId, IMapper mapper)
         {
-            var item = await GetItemOrThrow(new GetByIdSpec<TEntity>()
-            {
-                Id = itemId
-            })
-            .ConfigureAwait(false);
+            var item = await GetItemOrThrow(new GetByIdSpec<TEntity> { Id = itemId })
+                .ConfigureAwait(false);
 
-            return _mapper.Map<TDto>(item);
+            return mapper.Map<TDto>(item);
         }
 
-        public virtual async Task<TDto> GetMappedItemOrThrow<TDto>(GetByIdSpec<TEntity> spec)
+        public virtual async Task<TDto> GetMappedItemOrThrow<TDto>(GetByIdSpec<TEntity> spec, IMapper mapper)
         {
-            var item = await GetItemOrThrow(spec).ConfigureAwait(false);
+            var item = await GetItemOrThrow(spec)
+                .ConfigureAwait(false);
 
-            return _mapper.Map<TDto>(item);
+            return mapper.Map<TDto>(item);
         }
 
         public virtual async Task<bool> IsItemExists(int entityId)
@@ -137,12 +129,12 @@ namespace DataAccess.Repository.DataService
             //.ConfigureAwait(false);
         }
 
-        public async Task<List<TDto>> GetItemsMappedList<TDto>(QuerySpec<TEntity> spec)
+        public async Task<List<TDto>> GetItemsMappedList<TDto>(QuerySpec<TEntity> spec, IMapper mapper)
         {
             return
                 (await GetItemsList(spec))
                 //.ConfigureAwait(false))
-                .Select(x => _mapper.Map<TDto>(x))
+                .Select(x => mapper.Map<TDto>(x))
                 .ToList();
         }
         
@@ -159,12 +151,12 @@ namespace DataAccess.Repository.DataService
                 //.ConfigureAwait(false);
         }
         
-        public async Task<List<TDto>> GetItemsOrderedMappedList<TSortKey, TDto>(OrderedQuerySpec<TEntity, TSortKey> spec)
+        public async Task<List<TDto>> GetItemsOrderedMappedList<TSortKey, TDto>(OrderedQuerySpec<TEntity, TSortKey> spec, IMapper mapper)
         {
             return
                 (await GetItemsOrderedList(spec))
                 //.ConfigureAwait(false))
-                .Select(x => _mapper.Map<TDto>(x))
+                .Select(x => mapper.Map<TDto>(x))
                 .ToList();
         }
         
@@ -197,34 +189,28 @@ namespace DataAccess.Repository.DataService
             }
         }
         
-        public void AddItem<TDto>(TDto dto)
+        public void AddItem<TDto>(TDto dto, IMapper mapper)
         {
-            var item = _mapper.Map<TEntity>(dto);
+            var item = mapper.Map<TEntity>(dto);
             AddItem(item);
         }
         
-        public virtual async Task<TEntity> AddAndSave(TEntity item)
+        public async Task<TEntity> AddAndSave(TEntity item)
         {
             AddItem(item);
 
             await _repository
-                .SaveChangesAsync();
-                //.ConfigureAwait(false);
+                .SaveChangesAsync()
+                .ConfigureAwait(false);
 
             return item;
         }
         
-        public async Task<TDto> AddAndSave<TDto>(TEntity item)
+        public async Task<TEntity> AddAndSave<TDto>(TDto dto, IMapper mapper)
         {
-            item = await AddAndSave(item);
-            return _mapper.Map<TDto>(item);
-        }
-        
-        public async Task<TDto> AddAndSave<TDto>(TDto dto)
-        {
-            var item = _mapper.Map<TEntity>(dto);
-            return await AddAndSave<TDto>(item);
-        }
+            var item = mapper.Map<TEntity>(dto);
+            return await AddAndSave(item).ConfigureAwait(false);
+        }               
 
         #endregion
 
@@ -247,9 +233,9 @@ namespace DataAccess.Repository.DataService
             }
         }
 
-        public void UpsertItem<TDto>(TDto dto)
+        public void UpsertItem<TDto>(TDto dto, IMapper mapper)
         {
-            var item = _mapper.Map<TEntity>(dto);
+            var item = mapper.Map<TEntity>(dto);
             UpsertItem(item);
         }
         
@@ -264,17 +250,11 @@ namespace DataAccess.Repository.DataService
             return item;
         }
         
-        public async Task<TDto> UpsertAndSave<TDto>(TEntity item)
+        public async Task<TEntity> UpsertAndSave<TDto>(TDto dto, IMapper mapper)
         {
-            await UpsertAndSave(item);
-            return _mapper.Map<TDto>(item);
-        }
-        
-        public async Task<TDto> UpsertAndSave<TDto>(TDto dto)
-        {
-            var item = _mapper.Map<TEntity>(dto);
-            return await UpsertAndSave<TDto>(item);
-        }
+            var item = mapper.Map<TEntity>(dto);
+            return await UpsertAndSave(item);
+        }               
 
         #endregion
 
@@ -288,14 +268,14 @@ namespace DataAccess.Repository.DataService
             return await Task.FromResult(false);
         }
         
-        public virtual async Task RemoveRange(IEnumerable<TEntity> items)
+        public void RemoveRange(IEnumerable<TEntity> items)
         {
             if (items == null) throw new ArgumentNullException(nameof(items));
 
             _repository.RemoveRange(items);
         }
 
-        public virtual async Task RemoveItem(int itemId)
+        public async Task RemoveItem(int itemId)
         {
             if (itemId <= default(int)) throw new ArgumentOutOfRangeException(nameof(itemId));
 
@@ -305,14 +285,14 @@ namespace DataAccess.Repository.DataService
             _repository.Remove<TEntity>(itemId);
         }
 
-        public virtual async Task RemoveItem(TEntity item)
+        public void RemoveItem(TEntity item)
         {
             _repository.Remove(item);
         }
 
         public virtual async Task RemoveItemAndSave(TEntity item)
         {
-            await RemoveItem(item);
+            RemoveItem(item);
             await _repository.SaveChangesAsync();
         }
 
