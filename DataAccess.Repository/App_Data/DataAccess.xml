@@ -1,0 +1,482 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>DataAccess.EF6</name>
+    </assembly>
+    <members>
+        <member name="T:DataAccess.EF6.Command.AddOrUpdateCmd`1">
+            <summary>
+            Базовый класс для команд добавления/обновления некой сущности
+            можно не наследоваться, а инстанцировать прямо в коде, указывая конкретный тип
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Command.DbCommandBase">
+            <summary>
+            базовый класс для команд, работающийх с БД
+            содержит контекст и репозиторий
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Command.IDbCommand`2">
+            <summary>
+            Тип "команда" (Command) - любая операция изменяющая данные
+            может возвращать результат операции
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Command.RemoveCmd`1">
+            <summary>
+            Базовый класс для команд удаления некой сущности
+            можно не наследоваться, а инстанцировать прямо в коде, указывая конкретный тип
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.DataService.DataServiceBase`1">
+            <summary>
+            Типизированная обертка над репозиторием, обеспечивающая
+            - набор удобных методов получения данных
+            - доступ к самому репозиторию
+            - доступ к контексту EF
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.DataServiceBase`1.IsItemRemoveForbidden(System.Int32)">
+            <summary>
+            можно ли разрешать пользователю удалять сущность, или она используется в других таблицах в качестве ключа
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.IsItemExists(System.Int32)">
+            <summary>
+            Проверить - существует ли в таблице запись с переданным Id?
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItem(System.Int32)">
+            <summary>
+            получить сущность по Id
+            </summary>
+            <param name="itemId">Id объекта</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItem(DataAccess.EF6.Specification.GetByIdSpec{`0})">
+            <summary>
+            получить сущность по Id
+            </summary>
+            <param name="spec">спецификация запроса (Id объекта, джоины)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetMappedItem``1(DataAccess.EF6.Specification.GetByIdSpec{`0})">
+            <summary>
+            получить сущность по Id  и сконвертировать ее в TDto
+            </summary>
+            <param name="spec">спецификация запроса (Id объекта, джоины)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetMappedItem``1(System.Int32)">
+            <summary>
+            получить сущность по Id  и сконвертировать ее в TDto
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemOrThrow(System.Int32)">
+            <summary>
+            получить сущность по Id и кинуть исключение, если не найдена
+            </summary>
+            <param name="itemId">Id объекта</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemOrThrow(DataAccess.EF6.Specification.GetByIdSpec{`0})">
+            <summary>
+            получить сущность по Id и кинуть исключение, если не найдена
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetMappedItemOrThrow``1(System.Int32)">
+            <summary>
+            получить сущность по Id и сконвертировать ее в TDto.
+            Кинуть исключение, если не найдена
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetMappedItemOrThrow``1(DataAccess.EF6.Specification.GetByIdSpec{`0})">
+            <summary>
+            получить сущность по Id и сконвертировать ее в TDto.
+            Кинуть исключение, если не найдена
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetQueryableList(DataAccess.EF6.Specification.QuerySpec{`0})">
+            <summary>
+            Получить объект запроса списка сущностей
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemsList(DataAccess.EF6.Specification.QuerySpec{`0})">
+            <summary>
+            получить список сущностей
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemsMappedList``1(DataAccess.EF6.Specification.QuerySpec{`0})">
+            <summary>
+            получить список сущностей EF, сконвертированный в TDto.  Маппинг для Automapper должен быть создан заранее
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemsOrderedList``1(DataAccess.EF6.Specification.OrderedQuerySpec{`0,``0})">
+            <summary>
+            получить список сущностей с кастомной сортировкой
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemsOrderedMappedList``2(DataAccess.EF6.Specification.OrderedQuerySpec{`0,``0})">
+            <summary>
+            получить список сущностей EF, сконвертированный в тип TDto, с кастомной сортировкой.
+            Маппинг для Automapper должен быть создан заранее.
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetQueryableOrderedList``1(DataAccess.EF6.Specification.OrderedQuerySpec{`0,``0})">
+            <summary>
+            Получить объект запроса (IQueryable) списка сущностей с кастомной сортировкой
+            </summary>
+            <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.GetItemsCount(DataAccess.EF6.Specification.Filter.IQueryFilter{`0})">
+            <summary>
+            получить кол-во сущностей по запросу
+            </summary>
+            <param name="filter">фильтр, применяемый к сущностям</param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddItem(`0)">
+            <summary>
+            добавить объект EF в контекст. Изменения в БД не сохраняем
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            добавить коллекцию объектов EF в контекст. Изменения в БД не сохраняем
+            </summary>
+            <param name="items"></param>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddItem``1(``0)">
+            <summary>
+            Смапить объект Dto в объект EF и добавить в контекст.  Изменения в БД не сохраняем
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddAndSave(`0)">
+            <summary>
+            добавить объект EF в контекст и сохранить изменения контекста в БД .
+            Вернуть сохраненный объект
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddAndSave``1(`0)">
+            <summary>
+            добавить объект EF в контекст и сохранить изменения контекста в БД.
+            Вернуть сохраненный объект сконвертированный в TDto
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.AddAndSave``1(``0)">
+            <summary>
+            сконвертировать Dto->EF, добавить в контекст, сохранить изменения контекста в БД.
+            Вернуть сохраненный объект сконвертированный в TDto
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertItem(`0)">
+            <summary>
+            добавить объект EF в контекст. Изменения в БД не сохраняем
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            добавить коллекцию объектов EF в контекст. Изменения в БД не сохраняем
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertItem``1(``0)">
+            <summary>
+            Смапить объект Dto в объект EF и добавить в контекст. Изменения в БД не сохраняем
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertAndSave(`0)">
+            <summary>
+            Добавить в контекст объект EF и сохранить в БД
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertAndSave``1(`0)">
+            <summary>
+            Добавить в контекст объект EF и сохранить в БД. Вернет смапленый в TDto объект
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.UpsertAndSave``1(``0)">
+            <summary>
+            Dto => EF, добавить в контекст  и сохранить в БД. Вернет смапленый обратно в TDto объект.
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.RemoveItem(`0)">
+            <summary>
+            удалить сущность
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.RemoveRange(System.Collections.Generic.IEnumerable{`0})">
+            <summary>
+            удалить коллекцию сущность
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.RemoveItem(System.Int32)">
+            <summary>
+            удалить сущность
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.RemoveItemAndSave(`0)">
+            <summary>
+            удалить сущность и сохранить изменения в БД
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.DataService.IDataService`1.RemoveItemAndSave(System.Int32)">
+            <summary>
+            удалить сущность и сохранить изменения в БД
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Query.DbQueryBase">
+            <summary>
+            базовый класс для запросов (Queries) к БД
+            в данный момент аналог DbCommandBase
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Query.GetByIdQuery`1">
+            <summary>
+            класс для запросов любых сущностей из БД по Id
+            от него можно (и даже нужно) не наследоваться, а инстанцировать прямо в коде, указывая конкретный тип
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Query.GetListQuery`1">
+            <summary>
+            класс для запросов сущностей из БД списком
+            Spec - параметры запроса (фильтрация, пагинация)
+            можно не наследоваться, а инстанцировать прямо в коде, указывая конкретный тип
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Query.GetListQuery`1.AttachResultToContext">
+            <summary>
+            Присоединять ли полученные сущности к контексту
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Query.GetOrderedListQuery`2">
+            <summary>
+            класс для запросов сущностей из БД списком
+            Spec - паремтры запроса (фильтрация, пагинация, сортировка)
+            можно не наследоваться, а инстанцировать прямо в коде, указывая конкретный тип
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Query.IDbQuery`2">
+            <summary>
+            Тип "запрос" (Query) - операция возвращающая данные 
+            не имеет права ничего менять 
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.DbContextEx.AttachObjectGraph``1(System.Data.Entity.DbContext,``0,System.Collections.Generic.HashSet{System.Type})">
+            <summary>
+            Корректно добавитьв контекст граф объектов, ранее отсоединенный от контекста.
+            (Могут быть проблемы, если у сущности несколько виртуальных свойств одного типа)
+            </summary>
+            <param name="context"></param>
+            <param name="rootEntity">Добавляемый объект верхнего уровня</param>
+            <param name="childTypes">Изменения в св-вах, принадлежащие к данному набору типов будут обработаны контекстом </param>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.DbContextEx.DetachAllEntities(System.Data.Entity.DbContext)">
+            <summary>
+            "очистить" объект контекста - убрать из него все "кешированные" сущности
+            </summary>
+            <param name="context"></param>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetDatabaseContext``1">
+            <summary>
+            получить контекст которым "пользуется" данный репозиторий
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetDbSet``1">
+            <summary>
+            получить DbSet из контекста, в котором содержатся объекты TEntity
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetQueryable``1">
+            <summary>
+            получить DbSet из контекста, в котором содержатся объекты TEntity. Возвращается как объект типа IQueryable
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetFilteredQueryable``1(DataAccess.EF6.Specification.Filter.IQueryFilter{``0})">
+            <summary>
+            получить список сущностей, отфильтрованых по параметрам, переданным в объекте типа IQueryFilter
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetItemById``1(DataAccess.EF6.Specification.GetByIdSpec{``0})">
+            <summary>
+            получить сущность по Id
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetList``1(DataAccess.EF6.Specification.QuerySpec{``0})">
+            <summary>
+            получить список сущностей по "спецификации" - набору правил описывающему:
+            Join (какие таблицы присоединять к результату запроса)
+            Filter (набор Where-предикатов, фильтрующих сущности)
+            Paging (параметры пагинации запроса)
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.GetOrderedList``2(DataAccess.EF6.Specification.OrderedQuerySpec{``0,``1})">
+            <summary>
+            получить отсортированный список сущностей по "спецификации" - набору правил описывающему:
+            Join (какие таблицы присоединять к результату запроса)
+            Filter (набор Where-предикатов, фильтрующих сущности)
+            Paging (параметры пагинации запроса)
+            Order (правило сортировки результата)
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.AddOrUpdate``1(``0)">
+            <summary>
+            Создать новую сущность, либо обновить существующую (в контексте)
+            Операция выбирается в зависимости от поля Id (insert = Id==0)
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.Remove``1(``0)">
+            <summary>
+            удаление сущности (в контексте)
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.Remove``1(System.Int32)">
+            <summary>
+            удаление сущности по Id (в контексте)
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.RemoveRange``1(System.Collections.Generic.IEnumerable{``0})">
+            <summary>
+            удалить список сущностей
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.RemoveRange``1(System.Collections.Generic.IEnumerable{System.Int32})">
+            <summary>
+            удалить список сущностей по списку Id
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.SaveChanges">
+            <summary>
+            сохранить изменения контекста в БД
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.SaveChangesAsync">
+            <summary>
+            сохранить изменения контекста в БД
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.IRepository.TrackChildChanges``2(``0,System.Func{``0,System.Collections.Generic.ICollection{``1}},System.Linq.Expressions.Expression{System.Func{``1,System.Int32}})">
+            <summary>
+            Ослеживает изменения между сущностями с клиента и теми что есть в базе, не вызывает сохранение контекста
+            </summary>
+            <typeparam name="TParent">Тип Родителя</typeparam>
+            <typeparam name="TChild">Тип ребенка</typeparam>
+            <param name="parent">Сущность родителя (с клиента)</param>
+            <param name="refFromParrentToChildCollection">Лямба указывающая на коллекцию изменения которой нужно отследить</param>
+            <param name="refFromChildToParrentKey">Лямбда указывающая на обратное свойсво с ключем на родителя</param>
+            <returns>Возвращает коллекцию новых сущностей привязанных к контексту</returns>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.QueryableEx.ApplyFilter``1(System.Linq.IQueryable{``0},DataAccess.EF6.Specification.Filter.IQueryFilter{``0})">
+            <summary>
+            отфильтировать IQueryable используя IQueryFilter
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.QueryableEx.ApplyJoin``1(System.Linq.IQueryable{``0},DataAccess.EF6.Specification.Join.IQueryJoin{``0})">
+            <summary>
+            включить в результаты запроса доп. таблицы, описанные в IQueryJoin
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.QueryableEx.ApplyPaging``1(System.Linq.IQueryable{``0},DataAccess.EF6.Specification.Paging.IQueryPaging)">
+            <summary>
+            пагинация IQueryable на основе IQueryPaging
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.QueryableEx.ApplyOrder``2(System.Linq.IQueryable{``0},DataAccess.EF6.Specification.Order.IQueryOrder{``0,``1})">
+            <summary>
+            сортировка IQueryable на основе выражения, переданного в IQueryOrder
+            </summary>
+        </member>
+        <member name="M:DataAccess.EF6.Repository.QueryableEx.ApplyTracking``1(System.Linq.IQueryable{``0},System.Boolean)">
+            <summary>
+            применения к запросу метода AsNoTracking()
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Repository.RepositoryBase`1">
+            <summary>
+            Набор методов, реализующих основные операции с БД. 
+            Особенность: типизирован не сам класс, а каждый метод, для того, 
+            чтобы 1 и тот же экземпляр репозитория можно было использовать
+            для запросов к разным наборам сущностей(DbSet-ам) из контекста.
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.Filter.QueryFilterBase`1.Id">
+            <summary>
+            Id, по которому осуществляется поиск
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.Filter.QueryFilterBase`1.IdList">
+            <summary>
+            Список Id, по которым осуществляется поиск
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.GetByIdSpec`1.Id">
+            <summary>
+            Id искомой сущности
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.GetByIdSpec`1.AsNoTracking">
+            <summary>
+            убирать ли полученную сущность из контекста после получения
+            </summary>
+        </member>
+        <member name="F:DataAccess.EF6.Specification.GetByIdSpec`1.Join">
+            <summary>
+            объект, содержащий информацию о включении в результаты запроса доп. таблиц
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Specification.OrderedQuerySpec`2">
+            <summary>
+            набор параметров, кастомизирующих запрос к БД, требующий сортировки данных
+            </summary>
+        </member>
+        <member name="F:DataAccess.EF6.Specification.OrderedQuerySpec`2.BaseSpec">
+            <summary>
+            стандартный набор параметров запроса
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.OrderedQuerySpec`2.Order">
+            <summary>
+            объект описывающий требуемую сортировку
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.Paging.QueryPaging.PageNumber">
+            <summary>
+            Номер страницы
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.Paging.QueryPaging.PageSize">
+            <summary>
+            Размер страницы
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.Paging.QueryPaging.Offset">
+            <summary>
+            Номер последнего просматриваемого элемента
+            </summary>
+        </member>
+        <member name="T:DataAccess.EF6.Specification.QuerySpec`1">
+            <summary>
+            Набор параметров, кастомизирующих запрос к БД
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.QuerySpec`1.Filter">
+            <summary>
+            объект, содержащий параметры для фильтрации сущностей
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.QuerySpec`1.Join">
+            <summary>
+            объект, содержащий информацию о включении в результаты запроса доп. таблиц
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.QuerySpec`1.Paging">
+            <summary>
+            пагинация
+            </summary>
+        </member>
+        <member name="P:DataAccess.EF6.Specification.QuerySpec`1.AsNoTracking">
+            <summary>
+            убирать ли полученную сущность из контекста после получения
+            </summary>
+        </member>
+    </members>
+</doc>
