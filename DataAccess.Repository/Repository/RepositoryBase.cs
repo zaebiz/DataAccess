@@ -36,7 +36,6 @@ namespace DataAccess.Repository.Repository
         public IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IDbEntity
             => GetDbSet<TEntity>();
 
-        [Obsolete]
         public IQueryable<TEntity> GetFilteredQueryable<TEntity>(IQueryFilter<TEntity> spec) where TEntity : class, IDbEntity
             => GetQueryable<TEntity>()
                 .ApplyFilter(spec);
