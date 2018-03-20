@@ -1,18 +1,16 @@
 <?xml version="1.0"?>
 <package >
   <metadata>
-    <id>$id$</id>
+    <id>Nt.DataAccess.Repository</id>
     <version>$version$</version>
-    <title>$title$</title>
+    <title>Nt.DataAccess.Repository</title>
     <authors>$author$</authors>
-    <owners>$author$</owners>
-    <licenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</licenseUrl>
-    <projectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</projectUrl>
-    <iconUrl>http://ICON_URL_HERE_OR_DELETE_THIS_LINE</iconUrl>
+    <owners>$author$</owners>    
+    <projectUrl>https://github.com/zaebiz/DataAccess</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>Summary of changes made in this release of the package.</releaseNotes>
+    <releaseNotes>production ready</releaseNotes>
     <copyright>Copyright 2018</copyright>
-    <tags>Tag1 Tag2</tags>
+    <tags>entityframework6; repository;</tags>
   </metadata>
 </package>
