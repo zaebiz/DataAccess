@@ -1,0 +1,1 @@
+c:\work\nuget.exe pack DataAccess.Repository.csproj
