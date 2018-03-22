@@ -146,5 +146,21 @@ namespace DataAccess.Repository.Extensions
 
             return newItems;
         }
+
+        public static void AddEntityToContextAndMarkSomePropertiesAsModified<T>(this DbContext context, T entity, params Expression<Func<T, object>>[] updatedProperties) where T : class
+        {
+            if (!updatedProperties.Any())
+                return;
+
+            //attach to context, can throw exception if we already have entity with same primary key
+            context.Set<T>().Attach(entity);
+
+            var dbEntityEntry = context.Entry(entity);
+            //update explicitly mentioned properties
+            foreach (var property in updatedProperties)
+            {
+                dbEntityEntry.Property(property).IsModified = true;
+            }
+        }
     }
 }
