@@ -50,19 +50,17 @@ namespace DataAccess.Repository.Repository
 
         public IQueryable<TEntity> GetList<TEntity>(QuerySpec<TEntity> spec) where TEntity : class, IDbEntity
         {
-            var queryable = GetFilteredQueryable(spec.Filter)
-                .ApplyJoin(spec.Join)
-                .ApplyTracking(spec.AsNoTracking);
-
-            if (spec.Paging != null) //сортировка не будет работать если нет пагинации
+            //сортировка не будет работать если нет пагинации
+            if (spec.Paging != null)
             {
-                queryable = queryable.ApplyOrder(
-                    new QueryOrderBase<TEntity>(x => x.OrderBy(i => i.Id))
-                );
+                spec.Order = spec.Order ?? new QueryOrderBase<TEntity>(x => x.OrderBy(i => i.Id));
             }
-                
 
-            return queryable.ApplyPaging(spec.Paging);
+            return GetFilteredQueryable(spec.Filter)
+                .ApplyJoin(spec.Join)
+                .ApplyTracking(spec.AsNoTracking)
+                .ApplyOrder(spec.Order)
+                .ApplyPaging(spec.Paging);
         }
 
         public void AddOrUpdate<TEntity>(TEntity entity) where TEntity : class, IDbEntity
