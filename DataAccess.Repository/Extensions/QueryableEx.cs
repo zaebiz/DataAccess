@@ -50,7 +50,7 @@ namespace DataAccess.Repository.Extensions
         {
             if (order != null)
             {
-                if (order.Direction == 0)
+                if (order.Direction == (int)QueryOrderDirections.Ascending)
                     src = src.OrderBy(order.Expression);
                 else
                     src = src.OrderByDescending(order.Expression);

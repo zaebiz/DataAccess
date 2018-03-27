@@ -6,7 +6,7 @@ namespace DataAccess.Repository.Specification.Order
 {
     public class QueryOrderFactory<TEntity> where TEntity : class, IDbEntity
     {
-        public static IQueryOrder<TEntity, TColumn> Create<TColumn>(Expression<Func<TEntity, TColumn>> expression, int direction = 0)
+        public static IQueryOrder<TEntity, TColumn> Create<TColumn>(Expression<Func<TEntity, TColumn>> expression, int direction = (int)QueryOrderDirections.Ascending)
         {
             return new QueryOrderBase<TEntity, TColumn>()
             {
