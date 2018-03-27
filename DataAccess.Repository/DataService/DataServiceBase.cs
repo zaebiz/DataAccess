@@ -138,34 +138,12 @@ namespace DataAccess.Repository.DataService
                 .ToList();
         }
         
-        public virtual IQueryable<TEntity> GetQueryableOrderedList<TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec)
-        {
-            return _repository.GetOrderedList(spec);
-        }
-        
-        public virtual async Task<List<TEntity>> GetItemsOrderedList<TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec)
-        {
-            return await _repository
-                .GetOrderedList(spec)
-                .ToListAsync();
-                //.ConfigureAwait(false);
-        }
-        
-        public async Task<List<TDto>> GetItemsOrderedMappedList<TSortKey, TDto>(OrderedQuerySpec<TEntity, TSortKey> spec, IMapper mapper)
-        {
-            return
-                (await GetItemsOrderedList(spec))
-                //.ConfigureAwait(false))
-                .Select(x => mapper.Map<TDto>(x))
-                .ToList();
-        }
-        
         public virtual async Task<int> GetItemsCount(IQueryFilter<TEntity> filter)
         {
             return await _repository
                 .GetFilteredQueryable(filter)
-                .CountAsync();
-            //.ConfigureAwait(false);
+                .CountAsync()
+                .ConfigureAwait(false);
         }
 
         #endregion

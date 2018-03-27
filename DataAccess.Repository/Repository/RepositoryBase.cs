@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataAccess.Repository.Extensions;
 using DataAccess.Repository.Specification;
 using DataAccess.Repository.Specification.Filter;
+using DataAccess.Repository.Specification.Order;
 
 namespace DataAccess.Repository.Repository
 {
@@ -54,22 +55,14 @@ namespace DataAccess.Repository.Repository
                 .ApplyTracking(spec.AsNoTracking);
 
             if (spec.Paging != null) //сортировка не будет работать если нет пагинации
-                queryable = queryable.ApplyOrder(spec.DefaultOrder);
+            {
+                queryable = queryable.ApplyOrder(
+                    new QueryOrderBase<TEntity>(x => x.OrderBy(i => i.Id))
+                );
+            }
+                
 
             return queryable.ApplyPaging(spec.Paging);
-        }
-
-        public IQueryable<TEntity> GetOrderedList<TEntity, TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec)
-            where TEntity : class, IDbEntity
-        {
-            if (spec.Order == null)
-                throw new Exception("Не указана сортировка. Используйте QuerySpecification<>");
-
-            return GetFilteredQueryable(spec.BaseSpec.Filter)
-                .ApplyJoin(spec.BaseSpec.Join)
-                .ApplyTracking(spec.BaseSpec.AsNoTracking)
-                .ApplyOrder(spec.Order)
-                .ApplyPaging(spec.BaseSpec.Paging);
         }
 
         public void AddOrUpdate<TEntity>(TEntity entity) where TEntity : class, IDbEntity

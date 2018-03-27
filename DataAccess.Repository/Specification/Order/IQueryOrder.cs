@@ -1,14 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using DataAccess.Repository.Repository;
 
 namespace DataAccess.Repository.Specification.Order
 {
-    public interface IQueryOrder<TEntity, TSortKey> 
-        where TEntity : class, IDbEntity
+    public interface IQueryOrder<TEntity> where TEntity : class, IDbEntity
     {
-        int Direction { get; set; }
-        Expression<Func<TEntity, TSortKey>> Expression { get; set; }
+        IQueryable<TEntity> OrderItems(IQueryable<TEntity> src);
     }
-   
+
 }

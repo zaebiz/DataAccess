@@ -1,14 +1,23 @@
 ﻿using System;
+using System.Linq;
 using System.Linq.Expressions;
 using DataAccess.Repository.Repository;
 
 namespace DataAccess.Repository.Specification.Order
 {
-    public class QueryOrderBase<TEntity, TSortKey>
-       : IQueryOrder<TEntity, TSortKey>
-       where TEntity : class, IDbEntity
+    public class QueryOrderBase<TEntity> : IQueryOrder<TEntity>
+        where TEntity : class, IDbEntity
     {
-        public int Direction { get; set; }
-        public Expression<Func<TEntity, TSortKey>> Expression { get; set; }
+        private readonly Func<IQueryable<TEntity>, IQueryable<TEntity>> _orderFunc;
+
+        public QueryOrderBase(Func<IQueryable<TEntity>, IQueryable<TEntity>> orderFunc)
+        {
+            _orderFunc = orderFunc;
+        }
+
+        public IQueryable<TEntity> OrderItems(IQueryable<TEntity> src)
+        {
+            return _orderFunc(src);
+        }
     }
 }

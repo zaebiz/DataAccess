@@ -75,11 +75,9 @@
     <Compile Include="Specification\GetByIdSpec.cs" />
     <Compile Include="Specification\Join\IQueryJoin.cs" />
     <Compile Include="Specification\Join\QueryJoinBase.cs" />
-    <Compile Include="Specification\OrderedQuerySpec.cs" />
     <Compile Include="Specification\Order\IQueryOrder.cs" />
     <Compile Include="Specification\Order\QueryOrderBase.cs" />
     <Compile Include="Specification\Order\QueryOrderDirections.cs" />
-    <Compile Include="Specification\Order\QueryOrderFactory.cs" />
     <Compile Include="Specification\Paging\IQueryPaging.cs" />
     <Compile Include="Specification\Paging\QueryPaging.cs" />
     <Compile Include="Specification\QuerySpec.cs" />
