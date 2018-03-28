@@ -1,4 +1,5 @@
-﻿using DataAccess.Repository.Repository;
+﻿using System.Linq;
+using DataAccess.Repository.Repository;
 using DataAccess.Repository.Specification.Filter;
 using DataAccess.Repository.Specification.Join;
 using DataAccess.Repository.Specification.Order;
@@ -11,12 +12,6 @@ namespace DataAccess.Repository.Specification
     /// </summary>
     public class QuerySpec<TEntity> where TEntity : class, IDbEntity
     {
-        public QuerySpec()
-        {
-            Paging = new QueryPaging(20, 0);
-            DefaultOrder = QueryOrderFactory<TEntity>.Create();
-        }
-
         /// <summary>
         /// объект, содержащий параметры для фильтрации сущностей
         /// </summary>
@@ -32,9 +27,10 @@ namespace DataAccess.Repository.Specification
         /// </summary>
         public IQueryPaging Paging { get; set; }
 
-
-        // пейджинг без сортировки не работает
-        public IQueryOrder<TEntity, int> DefaultOrder { get; }
+        /// <summary>
+        /// лямбда для сортировки
+        /// </summary>
+        public IQueryOrder<TEntity> Order { get; set; }
 
         /// <summary>
         /// убирать ли полученную сущность из контекста после получения

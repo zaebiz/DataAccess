@@ -32,5 +32,8 @@
         /// Номер последнего просматриваемого элемента
         /// </summary>
         public int Offset => PageSize*PageNumber;
+
+        public static QueryPaging SingleItem 
+            => new QueryPaging(1, 1);
     }
 }

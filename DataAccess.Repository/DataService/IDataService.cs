@@ -91,26 +91,6 @@ namespace DataAccess.Repository.DataService
         Task<List<TDest>> GetItemsMappedList<TDest>(QuerySpec<TEntity> spec, IMapper mapper);
 
         /// <summary>
-        /// получить список сущностей с кастомной сортировкой
-        /// </summary>
-        /// <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
-        Task<List<TEntity>> GetItemsOrderedList<TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec);
-
-        /// <summary>
-        /// получить список сущностей EF, сконвертированный в тип TDto, с кастомной сортировкой.
-        /// Маппинг для Automapper должен быть создан заранее.
-        /// </summary>
-        /// <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
-        /// <param name="mapper">Automapper engine</param>
-        Task<List<TDest>> GetItemsOrderedMappedList<TSortKey, TDest>(OrderedQuerySpec<TEntity, TSortKey> spec, IMapper mapper);
-
-        /// <summary>
-        /// Получить объект запроса (IQueryable) списка сущностей с кастомной сортировкой
-        /// </summary>
-        /// <param name="spec">спецификация запроса (фильтрация, пагинация, джоины, сортировка)</param>
-        IQueryable<TEntity> GetQueryableOrderedList<TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec);
-
-        /// <summary>
         /// получить кол-во сущностей по запросу
         /// </summary>
         /// <param name="filter">фильтр, применяемый к сущностям</param>

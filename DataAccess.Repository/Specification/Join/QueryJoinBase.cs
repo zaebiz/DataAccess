@@ -6,16 +6,16 @@ namespace DataAccess.Repository.Specification.Join
 {
     public class QueryJoinBase<TEntity> : IQueryJoin<TEntity> where TEntity : class, IDbEntity
     {
-        private Func<IQueryable<TEntity>, IQueryable<TEntity>> _include;
+        private Func<IQueryable<TEntity>, IQueryable<TEntity>> _includeFunc;
 
-        public QueryJoinBase(Func<IQueryable<TEntity>, IQueryable<TEntity>> include)
+        public QueryJoinBase(Func<IQueryable<TEntity>, IQueryable<TEntity>> includeFunc)
         {
-            _include = include;
+            _includeFunc = includeFunc;
         }
 
         public IQueryable<TEntity> Include(IQueryable<TEntity> src)
         {
-            return _include(src);
+            return _includeFunc(src);
         }
     }
 }

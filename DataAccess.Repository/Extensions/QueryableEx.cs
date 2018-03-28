@@ -46,14 +46,27 @@ namespace DataAccess.Repository.Extensions
         /// <summary>
         /// сортировка IQueryable на основе выражения, переданного в IQueryOrder
         /// </summary>
-        public static IQueryable<TEntity> ApplyOrder<TEntity, TKey>(this IQueryable<TEntity> src, IQueryOrder<TEntity, TKey> order) where TEntity : class, IDbEntity
+        //public static IQueryable<TEntity> ApplyOrder<TEntity, TKey>(this IQueryable<TEntity> src, IQueryOrder<TEntity, TKey> order) where TEntity : class, IDbEntity
+        //{
+        //    if (order != null)
+        //    {
+        //        if (order.Direction == (int)QueryOrderDirections.Ascending)
+        //            src = src.OrderBy(order.Expression);
+        //        else
+        //            src = src.OrderByDescending(order.Expression);
+        //    }
+
+        //    return src;
+        //}
+
+        /// <summary>
+        /// сортировка IQueryable на основе IQueryOrder
+        /// </summary>
+        public static IQueryable<TEntity> ApplyOrder<TEntity>(this IQueryable<TEntity> src, IQueryOrder<TEntity> order) where TEntity : class, IDbEntity
         {
             if (order != null)
             {
-                if (order.Direction == 0)
-                    src = src.OrderBy(order.Expression);
-                else
-                    src = src.OrderByDescending(order.Expression);
+                src = order.OrderItems(src);
             }
 
             return src;

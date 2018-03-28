@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using DataAccess.Repository.Extensions;
 using DataAccess.Repository.Specification;
 using DataAccess.Repository.Specification.Filter;
+using DataAccess.Repository.Specification.Order;
 
 namespace DataAccess.Repository.Repository
 {
@@ -49,27 +50,17 @@ namespace DataAccess.Repository.Repository
 
         public IQueryable<TEntity> GetList<TEntity>(QuerySpec<TEntity> spec) where TEntity : class, IDbEntity
         {
-            var queryable = GetFilteredQueryable(spec.Filter)
+            //сортировка не будет работать если нет пагинации
+            if (spec.Paging != null)
+            {
+                spec.Order = spec.Order ?? new QueryOrderBase<TEntity>(x => x.OrderBy(i => i.Id));
+            }
+
+            return GetFilteredQueryable(spec.Filter)
                 .ApplyJoin(spec.Join)
-                .ApplyTracking(spec.AsNoTracking);
-
-            if (spec.Paging != null) //сортировка не будет работать если нет пагинации
-                queryable = queryable.ApplyOrder(spec.DefaultOrder);
-
-            return queryable.ApplyPaging(spec.Paging);
-        }
-
-        public IQueryable<TEntity> GetOrderedList<TEntity, TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec)
-            where TEntity : class, IDbEntity
-        {
-            if (spec.Order == null)
-                throw new Exception("Не указана сортировка. Используйте QuerySpecification<>");
-
-            return GetFilteredQueryable(spec.BaseSpec.Filter)
-                .ApplyJoin(spec.BaseSpec.Join)
-                .ApplyTracking(spec.BaseSpec.AsNoTracking)
+                .ApplyTracking(spec.AsNoTracking)
                 .ApplyOrder(spec.Order)
-                .ApplyPaging(spec.BaseSpec.Paging);
+                .ApplyPaging(spec.Paging);
         }
 
         public void AddOrUpdate<TEntity>(TEntity entity) where TEntity : class, IDbEntity

@@ -9,7 +9,7 @@
     <projectUrl>https://github.com/zaebiz/DataAccess</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>production ready</releaseNotes>
+    <releaseNotes>simplify query ordering</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>entityframework6; repository;</tags>
   </metadata>

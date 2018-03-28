@@ -45,15 +45,6 @@ namespace DataAccess.Repository.Repository
         IQueryable<TEntity> GetList<TEntity>(QuerySpec<TEntity> spec) where TEntity : class, IDbEntity;
 
         /// <summary>
-        /// получить отсортированный список сущностей по "спецификации" - набору правил описывающему:
-        /// Join (какие таблицы присоединять к результату запроса)
-        /// Filter (набор Where-предикатов, фильтрующих сущности)
-        /// Paging (параметры пагинации запроса)
-        /// Order (правило сортировки результата)
-        /// </summary>
-        IQueryable<TEntity> GetOrderedList<TEntity, TSortKey>(OrderedQuerySpec<TEntity, TSortKey> spec) where TEntity : class, IDbEntity;
-
-        /// <summary>
         /// Создать новую сущность, либо обновить существующую (в контексте)
         /// Операция выбирается в зависимости от поля Id (insert = Id==0)
         /// </summary>
