@@ -1,1 +1,1 @@
-c:\work\nuget.exe pack DataAccess.Repository.csproj
+c:\work\nuget.exe pack DataAccess.Repository.csproj -Prop Configuration=Release
