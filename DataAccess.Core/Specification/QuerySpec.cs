@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using DataAccess.Repository.Repository;
-using DataAccess.Repository.Specification.Filter;
-using DataAccess.Repository.Specification.Join;
-using DataAccess.Repository.Specification.Order;
-using DataAccess.Repository.Specification.Paging;
+﻿using DataAccess.Core.Specification.Filter;
+using DataAccess.Core.Specification.Join;
+using DataAccess.Core.Specification.Order;
+using DataAccess.Core.Specification.Paging;
 
-namespace DataAccess.Repository.Specification
+namespace DataAccess.Core.Specification
 {
     /// <summary>
     /// Набор параметров, кастомизирующих запрос к БД

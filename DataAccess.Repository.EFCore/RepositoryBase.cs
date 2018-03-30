@@ -1,15 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using DataAccess.Repository.Extensions;
 using DataAccess.Core;
 using DataAccess.Core.Specification;
 using DataAccess.Core.Specification.Filter;
 using DataAccess.Core.Specification.Order;
+using DataAccess.Repository.EFCore.Extensions;
+using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repository.Repository
+namespace DataAccess.Repository.EFCore
 {
     /// <summary>
     /// Набор методов, реализующих основные операции с БД. 
@@ -17,7 +17,7 @@ namespace DataAccess.Repository.Repository
     /// чтобы 1 и тот же экземпляр репозитория можно было использовать
     /// для запросов к разным наборам сущностей(DbSet-ам) из контекста.
     /// </summary>
-    public class RepositoryBase<TContext> : IRepository 
+    public class RepositoryBase<TContext> : IRepository where TContext : class
     {
         private readonly DbContext _db;
 
@@ -25,19 +25,17 @@ namespace DataAccess.Repository.Repository
         {
             _db = db as DbContext;
             if (_db == null)
-                throw new ArgumentException("DbContext reqiured", nameof(db));
+                throw new ArgumentException();
 
-            _db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+            // todo LogToOutput ?
+            //_db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
         }
 
-        public TDbContext GetDatabaseContext<TDbContext>() where TDbContext : class
+        public TDbContext GetDatabaseContext<TDbContext>() where TDbContext : class 
             => _db as TDbContext;
 
-        public IDbSet<TEntity> GetDbSet<TEntity>() where TEntity : class, IDbEntity
-            => _db.Set<TEntity>();
-
         public IQueryable<TEntity> GetQueryable<TEntity>() where TEntity : class, IDbEntity
-            => GetDbSet<TEntity>();
+            => _db.Set<TEntity>();
 
         public IQueryable<TEntity> GetFilteredQueryable<TEntity>(IQueryFilter<TEntity> spec) where TEntity : class, IDbEntity
             => GetQueryable<TEntity>()
@@ -45,7 +43,7 @@ namespace DataAccess.Repository.Repository
 
         public async Task<TEntity> GetItemById<TEntity>(GetByIdSpec<TEntity> spec) where TEntity : class, IDbEntity
             => await
-                GetQueryable<TEntity>()
+                _db.Set<TEntity>()
                     .ApplyJoin(spec.Join)
                     .ApplyTracking(spec.AsNoTracking)
                     .FirstOrDefaultAsync(x => x.Id == spec.Id);
@@ -58,7 +56,8 @@ namespace DataAccess.Repository.Repository
                 spec.Order = spec.Order ?? new QueryOrderBase<TEntity>(x => x.OrderBy(i => i.Id));
             }
 
-            return GetFilteredQueryable(spec.Filter)
+            return _db.Set<TEntity>()
+                .ApplyFilter(spec.Filter)
                 .ApplyJoin(spec.Join)
                 .ApplyTracking(spec.AsNoTracking)
                 .ApplyOrder(spec.Order)
@@ -67,7 +66,7 @@ namespace DataAccess.Repository.Repository
 
         public void Add<TEntity>(TEntity entity) where TEntity : class, IDbEntity
         {
-            GetDbSet<TEntity>().Add(entity);
+            _db.Set<TEntity>().Add(entity);
         }
 
         public void AddOrUpdate<TEntity>(TEntity entity) where TEntity : class, IDbEntity
@@ -83,13 +82,7 @@ namespace DataAccess.Repository.Repository
                     _db.Set<TEntity>().Add(entity);
                 else
                     _db.Entry(exist).CurrentValues.SetValues(entity);
-            }
-
-            //bool entityExist = entity.Id > 0;
-
-            //_db.Entry(entity).State = entityExist
-            //    ? EntityState.Modified
-            //    : EntityState.Added;
+            }            
         }
 
         public void Remove<TEntity>(TEntity entity) where TEntity : class, IDbEntity

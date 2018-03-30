@@ -1,7 +1,7 @@
 using System.Data.Entity;
 using System.Threading.Tasks;
+using DataAccess.Core;
 using DataAccess.CQRS.Models;
-using DataAccess.Repository.Repository;
 
 namespace DataAccess.CQRS.Command
 {

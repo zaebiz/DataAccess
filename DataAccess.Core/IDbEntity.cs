@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Repository.Repository
+﻿namespace DataAccess.Core
 {
     public interface IDbEntity
     {

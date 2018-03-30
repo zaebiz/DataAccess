@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DataAccess.Core;
 using DataAccess.Core.Specification;
 using DataAccess.Core.Specification.Filter;
+using Microsoft.EntityFrameworkCore;
 
 //using AutoMapper;
 

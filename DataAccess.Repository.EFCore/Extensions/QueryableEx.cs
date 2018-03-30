@@ -1,12 +1,12 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Linq;
 using DataAccess.Core;
 using DataAccess.Core.Specification.Filter;
 using DataAccess.Core.Specification.Join;
 using DataAccess.Core.Specification.Order;
 using DataAccess.Core.Specification.Paging;
+using Microsoft.EntityFrameworkCore;
 
-namespace DataAccess.Repository.Extensions
+namespace DataAccess.Repository.EFCore.Extensions
 {
     public static class QueryableEx
     {

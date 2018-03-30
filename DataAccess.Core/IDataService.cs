@@ -2,11 +2,10 @@
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
-using DataAccess.Repository.Repository;
-using DataAccess.Repository.Specification;
-using DataAccess.Repository.Specification.Filter;
+using DataAccess.Core.Specification;
+using DataAccess.Core.Specification.Filter;
 
-namespace DataAccess.Repository.DataService
+namespace DataAccess.Core
 {
     public interface IDataService<TEntity> where TEntity : class, IDbEntity
     {

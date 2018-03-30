@@ -1,4 +1,4 @@
-﻿namespace DataAccess.Repository.Specification.Paging
+﻿namespace DataAccess.Core.Specification.Paging
 {
     public interface IQueryPaging
     {

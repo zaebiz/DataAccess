@@ -1,4 +1,5 @@
 ﻿using System.Data.Entity;
+using DataAccess.Core;
 using DataAccess.Repository.Repository;
 
 namespace DataAccess.CQRS.Models

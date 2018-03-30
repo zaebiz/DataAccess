@@ -2,10 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using DataAccess.Repository.Repository;
 using TypeLite;
 
-namespace DataAccess.Repository.Specification.Filter
+namespace DataAccess.Core.Specification.Filter
 {
     // todo при необходимости можно вынести параметры фильтрации в отдельный класс
     [TsClass]
