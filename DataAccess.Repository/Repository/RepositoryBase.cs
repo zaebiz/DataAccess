@@ -27,7 +27,10 @@ namespace DataAccess.Repository.Repository
             if (_db == null)
                 throw new ArgumentException("DbContext reqiured", nameof(db));
 
+#if DEBUG
             _db.Database.Log = s => System.Diagnostics.Debug.WriteLine(s);
+#endif
+
         }
 
         public TDbContext GetDatabaseContext<TDbContext>() where TDbContext : class
