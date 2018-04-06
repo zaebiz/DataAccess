@@ -18,29 +18,35 @@ namespace DataAccess.Client.EFCore
         {
             Console.OutputEncoding = Encoding.UTF8;
 
-            string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            //string environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
 
-            if (String.IsNullOrWhiteSpace(environment))
-                throw new ArgumentNullException("Environment not found in ASPNETCORE_ENVIRONMENT");
+            //if (String.IsNullOrWhiteSpace(environment))
+            //    throw new ArgumentNullException("Environment not found in ASPNETCORE_ENVIRONMENT");
 
-            Console.WriteLine("Environment: {0}", environment);
+            //Console.WriteLine("Environment: {0}", environment);
 
-            var dict = new Dictionary<string, string>
-            {
-                {"ConnectionStrings:InMemoryBlogContext", ""},
-            };
+            //var dict = new Dictionary<string, string>
+            //{
+            //    {"ConnectionStrings:InMemoryBlogContext", ""},
+            //};
 
-            var services = new ServiceCollection();
+            //var services = new ServiceCollection();
 
-            // Set up configuration sources.
-            // todo use inmemory collection
-            _configuration = new ConfigurationBuilder()
-                .AddInMemoryCollection(dict)
-                .Build();
+            //// Set up configuration sources.
+            //// todo use inmemory collection
+            //_configuration = new ConfigurationBuilder()
+            //    .AddInMemoryCollection(dict)
+            //    .Build();
 
             _loggerFactory = new LoggerFactory()
-                .AddConsole(_configuration.GetSection("Logging"))
+                //.AddConsole(_configuration.GetSection("Logging"))
                 .AddDebug();
+
+            var factory = new ContextFactory(_loggerFactory);
+            new Sandbox(factory.GetContext())
+                .Test()
+                .GetAwaiter()
+                .GetResult();
 
             //services.AddDbContext<BlogContext>()
             //    UseI

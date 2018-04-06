@@ -4,11 +4,13 @@ using System.Text;
 using DataAccess.Client.EFCore.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace DataAccess.Client.EFCore
 {
     public class ContextFactory
     {
+        private readonly ILoggerFactory _logger;
         private List<User> _users;
         private List<Blog> _blogs;
         private List<Post> _posts;
@@ -16,8 +18,9 @@ namespace DataAccess.Client.EFCore
         private Random _r;
         private BlogContext _ctx;
 
-        public ContextFactory()
+        public ContextFactory(ILoggerFactory logger)
         {
+            _logger = logger;
             _users = new List<User>();
             _blogs = new List<Blog>();
             _posts = new List<Post>();
@@ -39,6 +42,7 @@ namespace DataAccess.Client.EFCore
             var ctx = new BlogContext(
                 new DbContextOptionsBuilder<BlogContext>()
                 .UseInMemoryDatabase("Blogs")
+                .UseLoggerFactory(_logger)
                 .Options);
 
             return InitDatabase(ctx);

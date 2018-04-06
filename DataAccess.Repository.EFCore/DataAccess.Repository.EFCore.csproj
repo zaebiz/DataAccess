@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>nikita titarenko</Authors>
+    <Company>nikita.titarenko@gmail.com</Company>
+    <Product>DataAccess</Product>
+    <Description>convinient Repository pattern realization for EF.Core</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

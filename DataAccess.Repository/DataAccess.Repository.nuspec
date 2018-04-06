@@ -9,8 +9,11 @@
     <projectUrl>https://github.com/zaebiz/DataAccess</projectUrl>    
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>$description$</description>
-    <releaseNotes>simplify query ordering</releaseNotes>
+    <releaseNotes>add DataAccess.Core reference</releaseNotes>
     <copyright>Copyright 2018</copyright>
     <tags>entityframework6; repository;</tags>
   </metadata>
+  <files>
+    <file src="bin\Release\DataAccess.Core.dll" target="lib\net461" />    
+  </files>
 </package>
