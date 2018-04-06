@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Linq;
-using System.Linq.Expressions;
-using DataAccess.Repository.Repository;
 
-namespace DataAccess.Repository.Specification.Order
+namespace DataAccess.Core.Specification.Order
 {
     /// <summary>
     /// Generic ordering rules incapsulation for QuerySpec objects

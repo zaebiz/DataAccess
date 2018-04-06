@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataAccess.Repository</RootNamespace>
     <AssemblyName>DataAccess.Repository</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -62,31 +62,21 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataService\DataServiceBase.cs" />
-    <Compile Include="DataService\IDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extensions\DbContextEx.cs" />
-    <Compile Include="Repository\DbEntityBase.cs" />
-    <Compile Include="Repository\IDbEntity.cs" />
-    <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Extensions\QueryableEx.cs" />
     <Compile Include="Repository\RepositoryBase.cs" />
-    <Compile Include="Specification\Filter\IQueryFilter.cs" />
-    <Compile Include="Specification\Filter\QueryFilterBase.cs" />
-    <Compile Include="Specification\GetByIdSpec.cs" />
-    <Compile Include="Specification\Join\IQueryJoin.cs" />
-    <Compile Include="Specification\Join\QueryJoinBase.cs" />
-    <Compile Include="Specification\Order\IQueryOrder.cs" />
-    <Compile Include="Specification\Order\QueryOrderBase.cs" />
-    <Compile Include="Specification\Order\QueryOrderDirections.cs" />
-    <Compile Include="Specification\Paging\IQueryPaging.cs" />
-    <Compile Include="Specification\Paging\QueryPaging.cs" />
-    <Compile Include="Specification\QuerySpec.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj">
+      <Project>{162c2e3f-8016-4b23-90de-6d433c9d048f}</Project>
+      <Name>DataAccess.Core</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>

@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>nikita titarenko</Authors>
+    <Company>nikita.titarenko@gmail.com</Company>
+    <Product>DataAccess</Product>
+    <Description>convinient Repository pattern realization for EF.Core</Description>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Repository\**" />
+    <Compile Remove="Specification\**" />
+    <EmbeddedResource Remove="Repository\**" />
+    <EmbeddedResource Remove="Specification\**" />
+    <None Remove="Repository\**" />
+    <None Remove="Specification\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.0.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj" />
+  </ItemGroup>
+
+</Project>

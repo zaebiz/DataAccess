@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Linq;
-using DataAccess.Repository.Repository;
 
-namespace DataAccess.Repository.Specification.Join
+namespace DataAccess.Core.Specification.Join
 {
     public class QueryJoinBase<TEntity> : IQueryJoin<TEntity> where TEntity : class, IDbEntity
     {

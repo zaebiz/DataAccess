@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Core;
+using DataAccess.Core.Specification;
 using DataAccess.CQRS.Models;
-using DataAccess.Repository.Repository;
-using DataAccess.Repository.Specification;
 
 namespace DataAccess.CQRS.Query
 {

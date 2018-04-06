@@ -1,9 +1,9 @@
 using System;
 using System.Data.Entity;
 using System.Threading.Tasks;
+using DataAccess.Core;
+using DataAccess.Core.Specification;
 using DataAccess.CQRS.Models;
-using DataAccess.Repository.Repository;
-using DataAccess.Repository.Specification;
 
 namespace DataAccess.CQRS.Query
 {

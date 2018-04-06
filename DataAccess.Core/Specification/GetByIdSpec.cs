@@ -1,7 +1,6 @@
-﻿using DataAccess.Repository.Repository;
-using DataAccess.Repository.Specification.Join;
+﻿using DataAccess.Core.Specification.Join;
 
-namespace DataAccess.Repository.Specification
+namespace DataAccess.Core.Specification
 {
     public class GetByIdSpec<TEntity>
         where TEntity : IDbEntity

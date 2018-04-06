@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DataAccess.CQRS</RootNamespace>
     <AssemblyName>DataAccess.CQRS</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -60,6 +60,10 @@
     <Compile Include="Models\IDbQuery.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DataAccess.Core\DataAccess.Core.csproj">
+      <Project>{162c2e3f-8016-4b23-90de-6d433c9d048f}</Project>
+      <Name>DataAccess.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DataAccess.Repository\DataAccess.Repository.csproj">
       <Project>{a2eb603e-f63c-40dc-b6ff-ce6df823da52}</Project>
       <Name>DataAccess.Repository</Name>
