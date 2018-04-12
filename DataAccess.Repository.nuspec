@@ -2,7 +2,7 @@
 <package >	
   <metadata>
     <id>Nt.DataAccess.Repository</id>
-    <version>1.2.5</version>
+    <version>1.2.7</version>
     <title>Nt.DataAccess.Repository</title>
     <authors>nikita titarenko</authors>
     <owners>nikita.titarenko@gmail.com</owners>    
@@ -16,12 +16,10 @@
 		<group targetFramework="net461">
 			<dependency id="AutoMapper" version="6.2.2" />
 			<dependency id="EntityFramework" version="6.2.0" />
-			<dependency id="TypeLite.Lib" version="1.8.4" />
 		</group>		
 		<group targetFramework="netstandard2.0">
 			<dependency id="AutoMapper" version="6.2.2" />
 			<dependency id="Microsoft.EntityFrameworkCore" version="2.0.2" />
-			<dependency id="TypeLite.Lib" version="1.8.4" />
 		</group>
 	</dependencies>
 	<references>
