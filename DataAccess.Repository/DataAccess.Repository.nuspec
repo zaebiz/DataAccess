@@ -13,8 +13,9 @@
     <copyright>Copyright 2018</copyright>
     <tags>entityframework6; repository;</tags>
   </metadata>
-  <files>
-    <file src="bin\Release\DataAccess.Core.dll" target="lib\net461" />    
-	<file src="..\DataAccess.Repository.EFCore\bin\Release\netstandard2.0\DataAccess.Repository.EFCore.dll" target="lib\netstandard2.0\DataAccess.Repository.EFCore.dll" />    
+  <files>  
+	<file src="bin\Release\DataAccess.Core.dll" target="lib\netstandard2.0" />    
+	<file src="bin\Release\DataAccess.Core.dll" target="lib\net461" />    
+	<file src="..\DataAccess.Repository.EFCore\bin\Release\netstandard2.0\DataAccess.Repository.EFCore.dll" target="lib\netstandard2.0" />    
   </files>
 </package>
