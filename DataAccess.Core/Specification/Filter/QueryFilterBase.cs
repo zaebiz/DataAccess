@@ -2,29 +2,24 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
-using TypeLite;
 
 namespace DataAccess.Core.Specification.Filter
 {
     // todo при необходимости можно вынести параметры фильтрации в отдельный класс
-    [TsClass]
-    public class QueryFilterBase<TEntity> 
+    public class QueryFilterBase<TEntity>
         : IQueryFilter<TEntity>
         where TEntity : class, IDbEntity
     {
         /// <summary>
         /// Id, по которому осуществляется поиск
         /// </summary>
-        [TsProperty(IsOptional = true)]
         public int? Id { get; set; }
 
         /// <summary>
         /// Список Id, по которым осуществляется поиск
         /// </summary>
-        [TsProperty(IsOptional = true)]
         public List<int> IdList { get; set; }
 
-        [TsProperty(IsOptional = true)]
         private Expression<Func<TEntity, bool>> _filter { get; set; }
 
         public QueryFilterBase()

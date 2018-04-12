@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<package >	
+  <metadata>
+    <id>Nt.DataAccess.Repository</id>
+    <version>1.2.5</version>
+    <title>Nt.DataAccess.Repository</title>
+    <authors>nikita titarenko</authors>
+    <owners>nikita.titarenko@gmail.com</owners>    
+    <projectUrl>https://github.com/zaebiz/DataAccess</projectUrl>    
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>convinient Repository pattern realization for EF.Core</description>
+    <releaseNotes>add DataAccess.Core reference</releaseNotes>
+    <copyright>Copyright 2018</copyright>
+    <tags>entityframework6; repository;</tags>
+	<dependencies>
+		<group targetFramework="net461">
+			<dependency id="AutoMapper" version="6.2.2" />
+			<dependency id="EntityFramework" version="6.2.0" />
+			<dependency id="TypeLite.Lib" version="1.8.4" />
+		</group>		
+		<group targetFramework="netstandard2.0">
+			<dependency id="AutoMapper" version="6.2.2" />
+			<dependency id="Microsoft.EntityFrameworkCore" version="2.0.2" />
+			<dependency id="TypeLite.Lib" version="1.8.4" />
+		</group>
+	</dependencies>
+	<references>
+		<group targetFramework="net461">
+			<reference file="DataAccess.Core.dll" />
+			<reference file="DataAccess.Repository.dll" />
+		</group>
+		<group targetFramework="netstandard2.0">
+			<reference file="DataAccess.Core.dll" />
+			<reference file="DataAccess.Repository.EFCore.dll" />
+		</group>
+	</references>
+  </metadata> 
+	<files>  		
+		<file src="DataAccess.Core\bin\Release\netstandard2.0\DataAccess.Core.dll" target="lib\net461" />  
+		<file src="DataAccess.Repository\bin\Release\DataAccess.Repository.dll" target="lib\net461" />    
+
+		<file src="DataAccess.Core\bin\Release\netstandard2.0\DataAccess.Core.dll" target="lib\netstandard2.0" />    
+		<file src="DataAccess.Repository.EFCore\bin\Release\netstandard2.0\DataAccess.Repository.EFCore.dll" target="lib\netstandard2.0" />    
+	</files>  
+</package>
