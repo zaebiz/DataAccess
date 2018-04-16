@@ -2,7 +2,7 @@
 <package >	
   <metadata>
     <id>Nt.DataAccess.Repository</id>
-    <version>1.2.7</version>
+    <version>1.2.8</version>
     <title>Nt.DataAccess.Repository</title>
     <authors>nikita titarenko</authors>
     <owners>nikita.titarenko@gmail.com</owners>    
